@@ -1099,29 +1099,30 @@
     </div>
 
     <!-- Stats Section -->
-    <section class="py-16 bg-scm-blue text-white">
-        <div class="container">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-                <div class="stat-item">
-                    <div class="stat-number tabular-nums" id="stat-years">0</div>
-                    <p class="stat-label">Años de historia</p>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number tabular-nums" id="stat-congresses">0</div>
-                    <p class="stat-label">Congresos realizados</p>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number tabular-nums" id="stat-members">0</div>
-                    <p class="stat-label">Socios activos</p>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number tabular-nums" id="stat-publications">0</div>
-                    <p class="stat-label">Publicaciones</p>
-                </div>
+    <!-- Replace the Stats Section with this updated version -->
+<section class="py-16 bg-scm-blue text-white">
+    <div class="container">
+        <!-- Changed from grid to flex container -->
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 2rem;">
+            <div class="stat-item" style="flex: 1; min-width: 200px;">
+                <div class="stat-number tabular-nums" id="stat-years">0</div>
+                <p class="stat-label">Años de historia</p>
+            </div>
+            <div class="stat-item" style="flex: 1; min-width: 200px;">
+                <div class="stat-number tabular-nums" id="stat-congresses">0</div>
+                <p class="stat-label">Congresos realizados</p>
+            </div>
+            <div class="stat-item" style="flex: 1; min-width: 200px;">
+                <div class="stat-number tabular-nums" id="stat-members">0</div>
+                <p class="stat-label">Socios activos</p>
+            </div>
+            <div class="stat-item" style="flex: 1; min-width: 200px;">
+                <div class="stat-number tabular-nums" id="stat-publications">0</div>
+                <p class="stat-label">Publicaciones</p>
             </div>
         </div>
-    </section>
-
+    </div>
+</section>
     <!-- About Section -->
     <section class="py-16 bg-white" id="about-section">
         <div class="container">
