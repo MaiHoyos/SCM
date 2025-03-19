@@ -94,6 +94,7 @@
             height: 60px;
             vertical-align: top;
             padding: 5px;
+            position: relative;
         }
 
         .calendar td:first-child {
@@ -116,22 +117,32 @@
             background-color: #fff7ed;
             border-left: 3px solid #f97316;
             border-radius: 4px;
-            padding: 5px 8px;
-            margin-bottom: 5px;
-            font-size: 0.85rem;
+            padding: 8px;
+            font-size: 0.9rem;
             color: #1f2937;
             cursor: pointer;
             transition: all 0.2s ease;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .event:hover {
             background-color: #ffedd5;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transform: translateY(-1px);
+        }
+
+        .event-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .event-time {
+            font-size: 0.75rem;
+            color: #6b7280;
         }
 
         .event.special {
@@ -196,14 +207,14 @@
             color: #1f2937;
         }
 
-        .event-title {
+        .modal-event-title {
             font-size: 1.25rem;
             font-weight: 600;
             color: #1f2937;
             margin-bottom: 10px;
         }
 
-        .event-time {
+        .modal-event-time {
             display: inline-block;
             background-color: #f97316;
             color: white;
@@ -213,7 +224,7 @@
             margin-bottom: 15px;
         }
 
-        .event-description {
+        .modal-event-description {
             color: #4b5563;
             line-height: 1.5;
         }
@@ -432,7 +443,7 @@
                         <th>Viernes</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="calendarBody">
                     <!-- Las filas del calendario se generarán con JavaScript -->
                 </tbody>
             </table>
@@ -447,9 +458,9 @@
     <div id="eventModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2 id="eventTitle" class="event-title">Título del evento</h2>
-            <div id="eventTime" class="event-time">Hora del evento</div>
-            <p id="eventDescription" class="event-description">Descripción del evento...</p>
+            <h2 id="eventTitle" class="modal-event-title">Título del evento</h2>
+            <div id="eventTime" class="modal-event-time">Hora del evento</div>
+            <p id="eventDescription" class="modal-event-description">Descripción del evento...</p>
         </div>
     </div>
 
@@ -508,11 +519,12 @@
             ]
         };
 
-        // Definir las horas del día para el calendario
+        // Definir las horas del día para el calendario (en intervalos de 30 minutos para mayor precisión)
         const timeSlots = [
-            "07:00-08:00", "08:00-09:00", "09:00-10:00", "10:00-11:00", 
-            "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00", 
-            "15:00-16:00", "16:00-17:00", "17:00-18:00", "18:00-19:00"
+            "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", 
+            "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", 
+            "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", 
+            "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00"
         ];
 
         // Mapeo de días a índices de columna
@@ -526,26 +538,29 @@
 
         // Función para generar el calendario
         function generateCalendar() {
-            const calendarBody = document.querySelector('.calendar tbody');
+            const calendarBody = document.getElementById('calendarBody');
             calendarBody.innerHTML = '';
 
+            // Crear matriz para rastrear qué celdas ya están ocupadas
+            const occupiedCells = Array(timeSlots.length).fill().map(() => Array(6).fill(false));
+
             // Crear filas para cada franja horaria
-            timeSlots.forEach(timeSlot => {
+            for (let i = 0; i < timeSlots.length - 1; i++) {
                 const row = document.createElement('tr');
                 
                 // Celda de hora
                 const timeCell = document.createElement('td');
-                timeCell.innerHTML = `<div class="time-cell">${timeSlot}</div>`;
+                timeCell.innerHTML = `<div class="time-cell">${timeSlots[i]}</div>`;
                 row.appendChild(timeCell);
                 
                 // Celdas para cada día (5 días)
-                for (let i = 1; i <= 5; i++) {
+                for (let j = 1; j <= 5; j++) {
                     const dayCell = document.createElement('td');
                     row.appendChild(dayCell);
                 }
                 
                 calendarBody.appendChild(row);
-            });
+            }
 
             // Colocar eventos en el calendario
             Object.keys(scheduleData).forEach(day => {
@@ -553,28 +568,57 @@
                 
                 scheduleData[day].forEach(event => {
                     const [startTime, endTime] = event.time.split('-');
-                    const startHour = parseInt(startTime.split(':')[0]);
                     
-                    // Encontrar la fila correspondiente a la hora de inicio
-                    const rowIndex = timeSlots.findIndex(slot => slot.startsWith(startTime.substring(0, 2)));
+                    // Encontrar los índices de inicio y fin en timeSlots
+                    const startIndex = timeSlots.indexOf(startTime);
+                    const endIndex = timeSlots.indexOf(endTime);
                     
-                    if (rowIndex !== -1) {
-                        const cell = calendarBody.rows[rowIndex].cells[dayIndex];
+                    if (startIndex !== -1 && endIndex !== -1) {
+                        // Calcular el número de filas que debe ocupar el evento
+                        const rowSpan = endIndex - startIndex;
                         
-                        // Crear el elemento del evento
-                        const eventElement = document.createElement('div');
-                        eventElement.className = `event ${event.type}`;
-                        eventElement.textContent = event.activity;
-                        eventElement.setAttribute('data-activity', event.activity);
-                        eventElement.setAttribute('data-time', event.time);
-                        eventElement.setAttribute('data-description', event.description);
-                        
-                        // Agregar evento al hacer clic
-                        eventElement.addEventListener('click', function() {
-                            showEventDetails(event);
-                        });
-                        
-                        cell.appendChild(eventElement);
+                        // Verificar si la celda ya está ocupada
+                        if (!occupiedCells[startIndex][dayIndex]) {
+                            // Marcar las celdas como ocupadas
+                            for (let i = startIndex; i < endIndex; i++) {
+                                occupiedCells[i][dayIndex] = true;
+                            }
+                            
+                            // Obtener la celda donde se colocará el evento
+                            const cell = calendarBody.rows[startIndex].cells[dayIndex];
+                            
+                            // Establecer el rowspan para que ocupe múltiples filas
+                            cell.rowSpan = rowSpan;
+                            
+                            // Crear el elemento del evento
+                            const eventElement = document.createElement('div');
+                            eventElement.className = `event ${event.type}`;
+                            
+                            const eventTitle = document.createElement('div');
+                            eventTitle.className = 'event-title';
+                            eventTitle.textContent = event.activity;
+                            
+                            const eventTime = document.createElement('div');
+                            eventTime.className = 'event-time';
+                            eventTime.textContent = event.time;
+                            
+                            eventElement.appendChild(eventTitle);
+                            eventElement.appendChild(eventTime);
+                            
+                            // Agregar evento al hacer clic
+                            eventElement.addEventListener('click', function() {
+                                showEventDetails(event);
+                            });
+                            
+                            cell.appendChild(eventElement);
+                            
+                            // Eliminar las celdas que serán ocupadas por el rowspan
+                            for (let i = 1; i < rowSpan; i++) {
+                                if (calendarBody.rows[startIndex + i]) {
+                                    calendarBody.rows[startIndex + i].deleteCell(dayIndex);
+                                }
+                            }
+                        }
                     }
                 });
             });
