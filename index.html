@@ -3,45 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Congreso Colombiano de Matemáticas</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Calendario - Congreso Colombiano de Matemáticas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             font-family: 'Inter', sans-serif;
         }
 
         body {
-            margin: 0;
-            padding: 0;
             background: linear-gradient(to bottom, #f0f7ff, #e0eafc);
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .container {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1200px;
             background-color: white;
             border-radius: 16px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            transition: all 0.3s ease;
-            margin: 20px;
-        }
-
-        .container:hover {
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-            transform: translateY(-5px);
+            margin-bottom: 20px;
         }
 
         .header {
             padding: 2rem;
             text-align: center;
+            border-bottom: 1px solid #f0f0f0;
         }
 
         .logo {
@@ -59,82 +53,108 @@
         .subtitle {
             font-size: 1.1rem;
             color: #6b7280;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
         }
 
-        .view-button {
+        /* Calendar Styles */
+        .calendar-container {
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .calendar {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .calendar th {
+            padding: 15px 10px;
             background-color: #f97316;
             color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 500;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            transition: all 0.2s ease;
-        }
-
-        .view-button:hover {
-            background-color: #ea580c;
-        }
-
-        .view-button svg {
-            margin-right: 0.5rem;
-        }
-
-        .preview-section {
-            background-color: #f9fafb;
-            padding: 1.5rem;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .preview-title {
-            font-size: 1.25rem;
             font-weight: 600;
+            text-align: center;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .calendar th:first-child {
+            width: 80px;
+            background-color: #e5e7eb;
             color: #4b5563;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
+            border-top-left-radius: 8px;
         }
 
-        .preview-title svg {
-            margin-right: 0.5rem;
-            color: #f97316;
+        .calendar th:last-child {
+            border-right: none;
+            border-top-right-radius: 8px;
         }
 
-        .preview-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background-color: white;
-            border-radius: 0.5rem;
-            margin-bottom: 0.75rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            transition: all 0.2s ease;
+        .calendar td {
+            border: 1px solid #e5e7eb;
+            height: 60px;
+            vertical-align: top;
+            padding: 5px;
         }
 
-        .preview-item:hover {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .activity {
+        .calendar td:first-child {
+            background-color: #f9fafb;
+            text-align: center;
             font-weight: 500;
-            color: #374151;
+            color: #4b5563;
+            border-right: 2px solid #e5e7eb;
         }
 
-        .time {
-            color: #f97316;
-            font-weight: 600;
+        .time-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            font-size: 0.85rem;
+        }
+
+        .event {
             background-color: #fff7ed;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
+            border-left: 3px solid #f97316;
+            border-radius: 4px;
+            padding: 5px 8px;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            color: #1f2937;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
-        /* Modal styles */
+        .event:hover {
+            background-color: #ffedd5;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .event.special {
+            background-color: #eff6ff;
+            border-left-color: #3b82f6;
+        }
+
+        .event.break {
+            background-color: #f0fdf4;
+            border-left-color: #22c55e;
+        }
+
+        .event.cultural {
+            background-color: #fdf2f8;
+            border-left-color: #ec4899;
+        }
+
+        .event.food {
+            background-color: #fef2f2;
+            border-left-color: #ef4444;
+        }
+
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -149,13 +169,11 @@
 
         .modal-content {
             background-color: white;
-            margin: 5% auto;
-            padding: 2rem;
-            border-radius: 1rem;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
             width: 90%;
-            max-width: 800px;
-            max-height: 80vh;
-            overflow-y: auto;
+            max-width: 500px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             animation: modalFadeIn 0.3s ease;
         }
@@ -178,163 +196,191 @@
             color: #1f2937;
         }
 
-        .modal-title {
-            text-align: center;
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: #f97316;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Tabs */
-        .tabs {
-            margin-bottom: 1.5rem;
-        }
-
-        .tab-list {
-            display: flex;
-            border-bottom: 1px solid #e5e7eb;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-
-        .tab-list::-webkit-scrollbar {
-            display: none;
-        }
-
-        .tab {
-            padding: 0.75rem 1rem;
-            font-weight: 500;
-            color: #6b7280;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border-bottom: 2px solid transparent;
-            white-space: nowrap;
-        }
-
-        .tab:hover {
-            color: #f97316;
-        }
-
-        .tab.active {
-            color: #f97316;
-            border-bottom-color: #f97316;
-        }
-
-        .tab-content {
-            display: none;
-            padding: 1rem 0;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Timeline */
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0.75rem;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background-color: #fed7aa;
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 1.5rem;
-            opacity: 0;
-            transform: translateX(-10px);
-            animation: slideIn 0.5s ease forwards;
-        }
-
-        @keyframes slideIn {
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: -2rem;
-            top: 0.5rem;
-            width: 1.5rem;
-            height: 1.5rem;
-            background-color: #fff7ed;
-            border: 2px solid #fdba74;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1;
-        }
-
-        .timeline-dot svg {
-            width: 0.75rem;
-            height: 0.75rem;
-            color: #f97316;
-        }
-
-        .timeline-content {
-            background-color: white;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            transition: all 0.2s ease;
-        }
-
-        .timeline-content:hover {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .timeline-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .timeline-activity {
-            font-weight: 500;
-            color: #374151;
-        }
-
-        .timeline-time {
-            color: #f97316;
+        .event-title {
+            font-size: 1.25rem;
             font-weight: 600;
-            background-color: #fff7ed;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .event-time {
+            display: inline-block;
+            background-color: #f97316;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
             font-size: 0.875rem;
+            margin-bottom: 15px;
+        }
+
+        .event-description {
+            color: #4b5563;
+            line-height: 1.5;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+
+        .legend-color.default {
+            background-color: #f97316;
+        }
+
+        .legend-color.special {
+            background-color: #3b82f6;
+        }
+
+        .legend-color.break {
+            background-color: #22c55e;
+        }
+
+        .legend-color.cultural {
+            background-color: #ec4899;
+        }
+
+        .legend-color.food {
+            background-color: #ef4444;
         }
 
         /* Responsive */
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             .title {
                 font-size: 1.75rem;
             }
             
-            .modal-content {
-                margin: 10% auto;
-                padding: 1.5rem;
-                width: 95%;
+            .calendar th, .calendar td {
+                font-size: 0.8rem;
             }
             
-            .tab {
-                padding: 0.5rem 0.75rem;
-                font-size: 0.875rem;
+            .event {
+                font-size: 0.75rem;
+                padding: 3px 5px;
             }
+        }
+
+        /* View toggle */
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 10px;
+        }
+
+        .view-button {
+            background-color: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .view-button:hover {
+            background-color: #e5e7eb;
+        }
+
+        .view-button.active {
+            background-color: #f97316;
+            color: white;
+            border-color: #f97316;
+        }
+
+        /* List view */
+        .list-container {
+            display: none;
+            padding: 20px;
+        }
+
+        .day-section {
+            margin-bottom: 30px;
+        }
+
+        .day-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #f97316;
+        }
+
+        .list-event {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .list-event:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .list-event-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .list-event-title {
+            font-weight: 500;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .list-event-time {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .list-event-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #f97316;
+        }
+
+        .list-event-indicator.special {
+            background-color: #3b82f6;
+        }
+
+        .list-event-indicator.break {
+            background-color: #22c55e;
+        }
+
+        .list-event-indicator.cultural {
+            background-color: #ec4899;
+        }
+
+        .list-event-indicator.food {
+            background-color: #ef4444;
         }
     </style>
 </head>
@@ -343,769 +389,310 @@
         <div class="header">
             <img src="https://scm.org.co/web/wp-content/uploads/elementor/thumbs/Logo-SCM-r2qh1mxorbv2czm5tghqms75lwyeustrgllshat8u8.png" alt="Logo Sociedad Colombiana de Matemáticas" class="logo">
             <h1 class="title">Congreso Colombiano de Matemáticas</h1>
-            <p class="subtitle">Descubre el programa y participa en las distintas actividades académicas y culturales.</p>
-            <button id="openModalBtn" class="view-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-                Ver Horario Completo
-            </button>
+            <p class="subtitle">Programa del congreso en formato calendario</p>
         </div>
 
-        <div class="preview-section">
-            <h3 class="preview-title">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
-                Actividades destacadas
-            </h3>
-            <div id="previewItems">
-                <!-- Preview items will be populated by JavaScript -->
+        <div class="view-toggle">
+            <button id="calendarViewBtn" class="view-button active">Vista Calendario</button>
+            <button id="listViewBtn" class="view-button">Vista Lista</button>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color default"></div>
+                <span>Actividades académicas</span>
             </div>
+            <div class="legend-item">
+                <div class="legend-color special"></div>
+                <span>Plenarias y Semilenarias</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color break"></div>
+                <span>Café y Descansos</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color cultural"></div>
+                <span>Actividades culturales</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color food"></div>
+                <span>Comidas</span>
+            </div>
+        </div>
+
+        <div id="calendarView" class="calendar-container">
+            <table class="calendar">
+                <thead>
+                    <tr>
+                        <th>Hora</th>
+                        <th>Lunes</th>
+                        <th>Martes</th>
+                        <th>Miércoles</th>
+                        <th>Jueves</th>
+                        <th>Viernes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Las filas del calendario se generarán con JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="listView" class="list-container">
+            <!-- La vista de lista se generará con JavaScript -->
         </div>
     </div>
 
-    <!-- Modal -->
-    <div id="scheduleModal" class="modal">
+    <!-- Modal para detalles del evento -->
+    <div id="eventModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2 class="modal-title">Programa del Congreso</h2>
-            
-            <div class="tabs">
-                <div class="tab-list">
-                    <div class="tab" data-day="monday">Lunes</div>
-                    <div class="tab active" data-day="tuesday">Martes</div>
-                    <div class="tab" data-day="wednesday">Miércoles</div>
-                    <div class="tab" data-day="thursday">Jueves</div>
-                    <div class="tab" data-day="friday">Viernes</div>
-                </div>
-                
-                <div id="mondayContent" class="tab-content">
-                    <div class="timeline">
-                        <div class="timeline-item" style="animation-delay: 0.1s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Acreditación de participantes</div>
-                                    <div class="timeline-time">15:00 - 18:00</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="tuesdayContent" class="tab-content active">
-                    <div class="timeline">
-                        <div class="timeline-item" style="animation-delay: 0.1s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Inauguración</div>
-                                    <div class="timeline-time">08:00 - 10:30</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.2s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Homenaje póstumo</div>
-                                    <div class="timeline-time">10:30 - 11:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.3s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Plenaria</div>
-                                    <div class="timeline-time">11:00 - 12:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.4s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Almuerzo</div>
-                                    <div class="timeline-time">12:00 - 14:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.5s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Contribuidas</div>
-                                    <div class="timeline-time">14:00 - 15:30</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.6s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Café y Pósteres</div>
-                                    <div class="timeline-time">15:30 - 16:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.7s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Semilenaria</div>
-                                    <div class="timeline-time">16:00 - 17:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.8s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Plenaria</div>
-                                    <div class="timeline-time">17:00 - 18:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.9s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Actividad cultural</div>
-                                    <div class="timeline-time">18:00 - 19:00</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="wednesdayContent" class="tab-content">
-                    <div class="timeline">
-                        <div class="timeline-item" style="animation-delay: 0.1s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Cursillo</div>
-                                    <div class="timeline-time">07:00 - 09:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.2s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Café</div>
-                                    <div class="timeline-time">09:00 - 09:30</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.3s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Plenaria</div>
-                                    <div class="timeline-time">09:30 - 10:30</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.4s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Contribuidas</div>
-                                    <div class="timeline-time">10:30 - 12:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.5s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Almuerzo</div>
-                                    <div class="timeline-time">12:00 - 14:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.6s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Contribuidas</div>
-                                    <div class="timeline-time">14:00 - 15:30</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.7s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Café y Pósteres</div>
-                                    <div class="timeline-time">15:30 - 16:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.8s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Semilenaria</div>
-                                    <div class="timeline-time">16:00 - 17:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.9s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Plenaria</div>
-                                    <div class="timeline-time">17:00 - 18:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 1s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy  stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Asamblea</div>
-                                    <div class="timeline-time">18:00 - 19:00</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="thursdayContent" class="tab-content">
-                    <div class="timeline">
-                        <div class="timeline-item" style="animation-delay: 0.1s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Cursillo</div>
-                                    <div class="timeline-time">07:00 - 09:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.2s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Café</div>
-                                    <div class="timeline-time">09:00 - 09:30</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.3s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Plenaria</div>
-                                    <div class="timeline-time">09:30 - 10:30</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.4s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Contribuidas</div>
-                                    <div class="timeline-time">10:30 - 12:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.5s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Almuerzo</div>
-                                    <div class="timeline-time">12:00 - 14:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.6s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Contribuidas</div>
-                                    <div class="timeline-time">14:00 - 15:30</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.7s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Café y Pósteres</div>
-                                    <div class="timeline-time">15:30 - 16:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.8s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Semilenaria</div>
-                                    <div class="timeline-time">16:00 - 17:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.9s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Plenaria</div>
-                                    <div class="timeline-time">17:00 - 18:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 1s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Cena</div>
-                                    <div class="timeline-time">18:00 - 19:00</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="fridayContent" class="tab-content">
-                    <div class="timeline">
-                        <div class="timeline-item" style="animation-delay: 0.1s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Cursillo</div>
-                                    <div class="timeline-time">07:00 - 09:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.2s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Café</div>
-                                    <div class="timeline-time">09:00 - 09:30</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.3s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Plenaria</div>
-                                    <div class="timeline-time">09:30 - 10:30</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.4s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Contribuidas</div>
-                                    <div class="timeline-time">10:30 - 12:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.5s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Almuerzo</div>
-                                    <div class="timeline-time">12:00 - 14:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.6s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Contribuidas</div>
-                                    <div class="timeline-time">14:00 - 15:30</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.7s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Café y Pósteres</div>
-                                    <div class="timeline-time">15:30 - 16:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.8s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Semilenaria</div>
-                                    <div class="timeline-time">16:00 - 17:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 0.9s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Plenaria</div>
-                                    <div class="timeline-time">17:00 - 18:00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item" style="animation-delay: 1s;">
-                            <div class="timeline-dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-activity">Actividad cultural</div>
-                                    <div class="timeline-time">18:00 - 19:00</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <h2 id="eventTitle" class="event-title">Título del evento</h2>
+            <div id="eventTime" class="event-time">Hora del evento</div>
+            <p id="eventDescription" class="event-description">Descripción del evento...</p>
         </div>
     </div>
 
     <script>
-        // Schedule data
+        // Datos del horario
         const scheduleData = {
             monday: [
-                { activity: "Acreditación de participantes", time: "15:00 - 18:00" }
+                { time: "15:00-18:00", activity: "Acreditación de participantes", type: "default", description: "Registro de participantes y entrega de materiales del congreso." }
             ],
             tuesday: [
-                { activity: "Inauguración", time: "08:00 - 10:30" },
-                { activity: "Homenaje póstumo", time: "10:30 - 11:00" },
-                { activity: "Plenaria", time: "11:00 - 12:00" },
-                { activity: "Almuerzo", time: "12:00 - 14:00" },
-                { activity: "Contribuidas", time: "14:00 - 15:30" },
-                { activity: "Café y Pósteres", time: "15:30 - 16:00" },
-                { activity: "Semilenaria", time: "16:00 - 17:00" },
-                { activity: "Plenaria", time: "17:00 - 18:00" },
-                { activity: "Actividad cultural", time: "18:00 - 19:00" }
+                { time: "08:00-10:30", activity: "Inauguración", type: "special", description: "Ceremonia de apertura del Congreso Colombiano de Matemáticas." },
+                { time: "10:30-11:00", activity: "Homenaje póstumo", type: "cultural", description: "Homenaje a matemáticos destacados que han fallecido recientemente." },
+                { time: "11:00-12:00", activity: "Plenaria", type: "special", description: "Conferencia plenaria a cargo de un invitado especial." },
+                { time: "12:00-14:00", activity: "Almuerzo", type: "food", description: "Pausa para almuerzo." },
+                { time: "14:00-15:30", activity: "Contribuidas", type: "default", description: "Sesiones de ponencias contribuidas por los participantes." },
+                { time: "15:30-16:00", activity: "Café y Pósteres", type: "break", description: "Pausa para café y sesión de pósteres." },
+                { time: "16:00-17:00", activity: "Semilenaria", type: "special", description: "Conferencia semilenaria a cargo de un invitado destacado." },
+                { time: "17:00-18:00", activity: "Plenaria", type: "special", description: "Conferencia plenaria a cargo de un invitado especial." },
+                { time: "18:00-19:00", activity: "Actividad cultural", type: "cultural", description: "Actividad cultural para todos los participantes." }
             ],
             wednesday: [
-                { activity: "Cursillo", time: "07:00 - 09:00" },
-                { activity: "Café", time: "09:00 - 09:30" },
-                { activity: "Plenaria", time: "09:30 - 10:30" },
-                { activity: "Contribuidas", time: "10:30 - 12:00" },
-                { activity: "Almuerzo", time: "12:00 - 14:00" },
-                { activity: "Contribuidas", time: "14:00 - 15:30" },
-                { activity: "Café y Pósteres", time: "15:30 - 16:00" },
-                { activity: "Semilenaria", time: "16:00 - 17:00" },
-                { activity: "Plenaria", time: "17:00 - 18:00" },
-                { activity: "Asamblea", time: "18:00 - 19:00" }
+                { time: "07:00-09:00", activity: "Cursillo", type: "default", description: "Curso corto sobre temas específicos de matemáticas." },
+                { time: "09:00-09:30", activity: "Café", type: "break", description: "Pausa para café." },
+                { time: "09:30-10:30", activity: "Plenaria", type: "special", description: "Conferencia plenaria a cargo de un invitado especial." },
+                { time: "10:30-12:00", activity: "Contribuidas", type: "default", description: "Sesiones de ponencias contribuidas por los participantes." },
+                { time: "12:00-14:00", activity: "Almuerzo", type: "food", description: "Pausa para almuerzo." },
+                { time: "14:00-15:30", activity: "Contribuidas", type: "default", description: "Sesiones de ponencias contribuidas por los participantes." },
+                { time: "15:30-16:00", activity: "Café y Pósteres", type: "break", description: "Pausa para café y sesión de pósteres." },
+                { time: "16:00-17:00", activity: "Semilenaria", type: "special", description: "Conferencia semilenaria a cargo de un invitado destacado." },
+                { time: "17:00-18:00", activity: "Plenaria", type: "special", description: "Conferencia plenaria a cargo de un invitado especial." },
+                { time: "18:00-19:00", activity: "Asamblea", type: "default", description: "Asamblea general de la Sociedad Colombiana de Matemáticas." }
             ],
             thursday: [
-                { activity: "Cursillo", time: "07:00 - 09:00" },
-                { activity: "Café", time: "09:00 - 09:30" },
-                { activity: "Plenaria", time: "09:30 - 10:30" },
-                { activity: "Contribuidas", time: "10:30 - 12:00" },
-                { activity: "Almuerzo", time: "12:00 - 14:00" },
-                { activity: "Contribuidas", time: "14:00 - 15:30" },
-                { activity: "Café y Pósteres", time: "15:30 - 16:00" },
-                { activity: "Semilenaria", time: "16:00 - 17:00" },
-                { activity: "Plenaria", time: "17:00 - 18:00" },
-                { activity: "Cena", time: "18:00 - 19:00" }
+                { time: "07:00-09:00", activity: "Cursillo", type: "default", description: "Curso corto sobre temas específicos de matemáticas." },
+                { time: "09:00-09:30", activity: "Café", type: "break", description: "Pausa para café." },
+                { time: "09:30-10:30", activity: "Plenaria", type: "special", description: "Conferencia plenaria a cargo de un invitado especial." },
+                { time: "10:30-12:00", activity: "Contribuidas", type: "default", description: "Sesiones de ponencias contribuidas por los participantes." },
+                { time: "12:00-14:00", activity: "Almuerzo", type: "food", description: "Pausa para almuerzo." },
+                { time: "14:00-15:30", activity: "Contribuidas", type: "default", description: "Sesiones de ponencias contribuidas por los participantes." },
+                { time: "15:30-16:00", activity: "Café y Pósteres", type: "break", description: "Pausa para café y sesión de pósteres." },
+                { time: "16:00-17:00", activity: "Semilenaria", type: "special", description: "Conferencia semilenaria a cargo de un invitado destacado." },
+                { time: "17:00-18:00", activity: "Plenaria", type: "special", description: "Conferencia plenaria a cargo de un invitado especial." },
+                { time: "18:00-19:00", activity: "Cena", type: "food", description: "Cena de gala del congreso." }
             ],
             friday: [
-                { activity: "Cursillo", time: "07:00 - 09:00" },
-                { activity: "Café", time: "09:00 - 09:30" },
-                { activity: "Plenaria", time: "09:30 - 10:30" },
-                { activity: "Contribuidas", time: "10:30 - 12:00" },
-                { activity: "Almuerzo", time: "12:00 - 14:00" },
-                { activity: "Contribuidas", time: "14:00 - 15:30" },
-                { activity: "Café y Pósteres", time: "15:30 - 16:00" },
-                { activity: "Semilenaria", time: "16:00 - 17:00" },
-                { activity: "Plenaria", time: "17:00 - 18:00" },
-                { activity: "Actividad cultural", time: "18:00 - 19:00" }
+                { time: "07:00-09:00", activity: "Cursillo", type: "default", description: "Curso corto sobre temas específicos de matemáticas." },
+                { time: "09:00-09:30", activity: "Café", type: "break", description: "Pausa para café." },
+                { time: "09:30-10:30", activity: "Plenaria", type: "special", description: "Conferencia plenaria a cargo de un invitado especial." },
+                { time: "10:30-12:00", activity: "Contribuidas", type: "default", description: "Sesiones de ponencias contribuidas por los participantes." },
+                { time: "12:00-14:00", activity: "Almuerzo", type: "food", description: "Pausa para almuerzo." },
+                { time: "14:00-15:30", activity: "Contribuidas", type: "default", description: "Sesiones de ponencias contribuidas por los participantes." },
+                { time: "15:30-16:00", activity: "Café y Pósteres", type: "break", description: "Pausa para café y sesión de pósteres." },
+                { time: "16:00-17:00", activity: "Semilenaria", type: "special", description: "Conferencia semilenaria a cargo de un invitado destacado." },
+                { time: "17:00-18:00", activity: "Plenaria", type: "special", description: "Conferencia plenaria a cargo de un invitado especial." },
+                { time: "18:00-19:00", activity: "Actividad cultural", type: "cultural", description: "Actividad cultural de clausura del congreso." }
             ]
         };
 
-        // Current active day
-        let activeDay = 'tuesday';
+        // Definir las horas del día para el calendario
+        const timeSlots = [
+            "07:00-08:00", "08:00-09:00", "09:00-10:00", "10:00-11:00", 
+            "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00", 
+            "15:00-16:00", "16:00-17:00", "17:00-18:00", "18:00-19:00"
+        ];
 
-        // Function to update preview items
-        function updatePreviewItems() {
-            const previewContainer = document.getElementById('previewItems');
-            previewContainer.innerHTML = '';
-            
-            // Get first 3 items from active day
-            const previewItems = scheduleData[activeDay].slice(0, 3);
-            
-            previewItems.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'preview-item';
-                itemElement.innerHTML = `
-                    <div class="activity">${item.activity}</div>
-                    <div class="time">${item.time}</div>
-                `;
-                previewContainer.appendChild(itemElement);
+        // Mapeo de días a índices de columna
+        const dayToColumn = {
+            monday: 1,
+            tuesday: 2,
+            wednesday: 3,
+            thursday: 4,
+            friday: 5
+        };
+
+        // Función para generar el calendario
+        function generateCalendar() {
+            const calendarBody = document.querySelector('.calendar tbody');
+            calendarBody.innerHTML = '';
+
+            // Crear filas para cada franja horaria
+            timeSlots.forEach(timeSlot => {
+                const row = document.createElement('tr');
+                
+                // Celda de hora
+                const timeCell = document.createElement('td');
+                timeCell.innerHTML = `<div class="time-cell">${timeSlot}</div>`;
+                row.appendChild(timeCell);
+                
+                // Celdas para cada día (5 días)
+                for (let i = 1; i <= 5; i++) {
+                    const dayCell = document.createElement('td');
+                    row.appendChild(dayCell);
+                }
+                
+                calendarBody.appendChild(row);
+            });
+
+            // Colocar eventos en el calendario
+            Object.keys(scheduleData).forEach(day => {
+                const dayIndex = dayToColumn[day];
+                
+                scheduleData[day].forEach(event => {
+                    const [startTime, endTime] = event.time.split('-');
+                    const startHour = parseInt(startTime.split(':')[0]);
+                    
+                    // Encontrar la fila correspondiente a la hora de inicio
+                    const rowIndex = timeSlots.findIndex(slot => slot.startsWith(startTime.substring(0, 2)));
+                    
+                    if (rowIndex !== -1) {
+                        const cell = calendarBody.rows[rowIndex].cells[dayIndex];
+                        
+                        // Crear el elemento del evento
+                        const eventElement = document.createElement('div');
+                        eventElement.className = `event ${event.type}`;
+                        eventElement.textContent = event.activity;
+                        eventElement.setAttribute('data-activity', event.activity);
+                        eventElement.setAttribute('data-time', event.time);
+                        eventElement.setAttribute('data-description', event.description);
+                        
+                        // Agregar evento al hacer clic
+                        eventElement.addEventListener('click', function() {
+                            showEventDetails(event);
+                        });
+                        
+                        cell.appendChild(eventElement);
+                    }
+                });
             });
         }
 
-        // Initialize preview items
-        updatePreviewItems();
+        // Función para generar la vista de lista
+        function generateListView() {
+            const listContainer = document.getElementById('listView');
+            listContainer.innerHTML = '';
+            
+            // Días de la semana en español
+            const dayNames = {
+                monday: 'Lunes',
+                tuesday: 'Martes',
+                wednesday: 'Miércoles',
+                thursday: 'Jueves',
+                friday: 'Viernes'
+            };
+            
+            // Crear secciones para cada día
+            Object.keys(scheduleData).forEach(day => {
+                const daySection = document.createElement('div');
+                daySection.className = 'day-section';
+                
+                const dayTitle = document.createElement('h3');
+                dayTitle.className = 'day-title';
+                dayTitle.textContent = dayNames[day];
+                daySection.appendChild(dayTitle);
+                
+                // Agregar eventos del día
+                scheduleData[day].forEach(event => {
+                    const eventElement = document.createElement('div');
+                    eventElement.className = 'list-event';
+                    
+                    const eventInfo = document.createElement('div');
+                    eventInfo.className = 'list-event-info';
+                    
+                    const eventTitle = document.createElement('div');
+                    eventTitle.className = 'list-event-title';
+                    eventTitle.textContent = event.activity;
+                    
+                    const eventTime = document.createElement('div');
+                    eventTime.className = 'list-event-time';
+                    eventTime.textContent = event.time;
+                    
+                    eventInfo.appendChild(eventTitle);
+                    eventInfo.appendChild(eventTime);
+                    
+                    const eventIndicator = document.createElement('div');
+                    eventIndicator.className = `list-event-indicator ${event.type}`;
+                    
+                    eventElement.appendChild(eventInfo);
+                    eventElement.appendChild(eventIndicator);
+                    
+                    // Agregar evento al hacer clic
+                    eventElement.addEventListener('click', function() {
+                        showEventDetails(event);
+                    });
+                    
+                    daySection.appendChild(eventElement);
+                });
+                
+                listContainer.appendChild(daySection);
+            });
+        }
 
-        // Modal functionality
-        const modal = document.getElementById('scheduleModal');
-        const openModalBtn = document.getElementById('openModalBtn');
-        const closeBtn = document.querySelector('.close');
-
-        openModalBtn.onclick = function() {
+        // Función para mostrar detalles del evento
+        function showEventDetails(event) {
+            const modal = document.getElementById('eventModal');
+            const title = document.getElementById('eventTitle');
+            const time = document.getElementById('eventTime');
+            const description = document.getElementById('eventDescription');
+            
+            title.textContent = event.activity;
+            time.textContent = event.time;
+            description.textContent = event.description;
+            
             modal.style.display = 'block';
+        }
+
+        // Inicializar el calendario y la vista de lista
+        document.addEventListener('DOMContentLoaded', function() {
+            generateCalendar();
+            generateListView();
             
-            // Reset animations for timeline items
-            document.querySelectorAll('.timeline-item').forEach(item => {
-                item.style.animation = 'none';
-                item.offsetHeight; // Trigger reflow
-                item.style.animation = null;
+            // Configurar cambio de vistas
+            const calendarViewBtn = document.getElementById('calendarViewBtn');
+            const listViewBtn = document.getElementById('listViewBtn');
+            const calendarView = document.getElementById('calendarView');
+            const listView = document.getElementById('listView');
+            
+            calendarViewBtn.addEventListener('click', function() {
+                calendarView.style.display = 'block';
+                listView.style.display = 'none';
+                calendarViewBtn.classList.add('active');
+                listViewBtn.classList.remove('active');
             });
-        }
-
-        closeBtn.onclick = function() {
-            modal.style.display = 'none';
-        }
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
+            
+            listViewBtn.addEventListener('click', function() {
+                calendarView.style.display = 'none';
+                listView.style.display = 'block';
+                calendarViewBtn.classList.remove('active');
+                listViewBtn.classList.add('active');
+            });
+            
+            // Configurar cierre del modal
+            const modal = document.getElementById('eventModal');
+            const closeBtn = document.querySelector('.close');
+            
+            closeBtn.onclick = function() {
                 modal.style.display = 'none';
             }
-        }
-
-        // Tab functionality
-        const tabs = document.querySelectorAll('.tab');
-        
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remove active class from all tabs and contents
-                tabs.forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                });
-                
-                // Add active class to clicked tab and corresponding content
-                tab.classList.add('active');
-                const day = tab.getAttribute('data-day');
-                document.getElementById(`${day}Content`).classList.add('active');
-                
-                // Update active day and preview items
-                activeDay = day;
-                updatePreviewItems();
-                
-                // Reset animations for timeline items
-                document.querySelectorAll('.timeline-item').forEach(item => {
-                    item.style.animation = 'none';
-                    item.offsetHeight; // Trigger reflow
-                    item.style.animation = null;
-                });
-            });
+            
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
         });
     </script>
 </body>
