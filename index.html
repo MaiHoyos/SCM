@@ -519,12 +519,10 @@
             ]
         };
 
-        // Definir las horas del día para el calendario (en intervalos de 30 minutos para mayor precisión)
+        // Definir las horas del día para el calendario (en intervalos de hora en hora)
         const timeSlots = [
-            "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", 
-            "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", 
-            "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", 
-            "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00"
+            "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", 
+            "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"
         ];
 
         // Mapeo de días a índices de columna
@@ -535,6 +533,24 @@
             thursday: 4,
             friday: 5
         };
+
+        // Función para calcular el número de horas entre dos tiempos
+        function calculateHourSpan(startTime, endTime) {
+            const start = parseInt(startTime.split(':')[0]);
+            const end = parseInt(endTime.split(':')[0]);
+            
+            // Para eventos que terminan en :30, añadimos 0.5 horas
+            const startMinutes = parseInt(startTime.split(':')[1]);
+            const endMinutes = parseInt(endTime.split(':')[1]);
+            
+            let span = end - start;
+            
+            // Ajustar para minutos
+            if (endMinutes === 30) span += 0.5;
+            if (startMinutes === 30) span -= 0.5;
+            
+            return Math.ceil(span); // Redondeamos hacia arriba para asegurar que cubra todo el espacio
+        }
 
         // Función para generar el calendario
         function generateCalendar() {
@@ -571,16 +587,15 @@
                     
                     // Encontrar los índices de inicio y fin en timeSlots
                     const startIndex = timeSlots.indexOf(startTime);
-                    const endIndex = timeSlots.indexOf(endTime);
                     
-                    if (startIndex !== -1 && endIndex !== -1) {
+                    if (startIndex !== -1) {
                         // Calcular el número de filas que debe ocupar el evento
-                        const rowSpan = endIndex - startIndex;
+                        const rowSpan = calculateHourSpan(startTime, endTime);
                         
                         // Verificar si la celda ya está ocupada
                         if (!occupiedCells[startIndex][dayIndex]) {
                             // Marcar las celdas como ocupadas
-                            for (let i = startIndex; i < endIndex; i++) {
+                            for (let i = startIndex; i < startIndex + rowSpan && i < timeSlots.length - 1; i++) {
                                 occupiedCells[i][dayIndex] = true;
                             }
                             
@@ -613,7 +628,7 @@
                             cell.appendChild(eventElement);
                             
                             // Eliminar las celdas que serán ocupadas por el rowspan
-                            for (let i = 1; i < rowSpan; i++) {
+                            for (let i = 1; i < rowSpan && startIndex + i < timeSlots.length - 1; i++) {
                                 if (calendarBody.rows[startIndex + i]) {
                                     calendarBody.rows[startIndex + i].deleteCell(dayIndex);
                                 }
