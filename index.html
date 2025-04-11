@@ -56,225 +56,153 @@
             margin-bottom: 1rem;
         }
 
+        /* Info Banner */
+        .info-banner {
+            background-color: #eff6ff;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px auto;
+            max-width: 800px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .info-icon {
+            color: #3b82f6;
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .info-text {
+            color: #1e40af;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .info-text strong {
+            font-weight: 600;
+        }
+
         /* Calendar Styles */
         .calendar-container {
             padding: 20px;
             overflow-x: auto;
         }
 
-        .calendar {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(5, 1fr);
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            min-width: 800px;
         }
 
-        .calendar th {
-            padding: 15px 10px;
+        .calendar-header {
             background-color: #f97316;
             color: white;
+            padding: 12px;
             font-weight: 600;
             text-align: center;
-            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .calendar th:first-child {
-            width: 80px;
-            background-color: #e5e7eb;
-            color: #4b5563;
-            border-top-left-radius: 8px;
+        .calendar-header:first-child {
+            background-color: #f3f4f6;
         }
 
-        .calendar th:last-child {
-            border-right: none;
-            border-top-right-radius: 8px;
-        }
-
-        .calendar td {
-            border: 1px solid #e5e7eb;
-            height: 60px;
-            vertical-align: top;
-            padding: 5px;
-        }
-
-        .calendar td:first-child {
+        .time-column {
             background-color: #f9fafb;
-            text-align: center;
-            font-weight: 500;
-            color: #4b5563;
-            border-right: 2px solid #e5e7eb;
         }
 
         .time-cell {
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100%;
-            font-size: 0.85rem;
+            font-size: 12px;
+            color: #6b7280;
+            border-bottom: 1px solid #e5e7eb;
+            font-weight: 500;
+        }
+
+        .day-column {
+            position: relative;
+            border-left: 1px solid #e5e7eb;
+        }
+
+        .hour-cell {
+            height: 60px;
+            border-bottom: 1px solid #e5e7eb;
         }
 
         .event {
-            background-color: #fff7ed;
-            border-left: 3px solid #f97316;
-            border-radius: 4px;
-            padding: 5px 8px;
-            margin-bottom: 5px;
-            font-size: 0.85rem;
-            color: #1f2937;
+            position: absolute;
+            left: 4px;
+            right: 4px;
+            border-radius: 6px;
+            padding: 6px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: all 0.2s ease;
+            border-left-width: 4px;
+            z-index: 10;
             overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
         .event:hover {
-            background-color: #ffedd5;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transform: translateY(-1px);
         }
 
-        .event.special {
+        .event-title {
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Event types */
+        .event-default {
+            background-color: #fff7ed;
+            border-left-color: #f97316;
+        }
+        .event-default:hover {
+            background-color: #ffedd5;
+        }
+
+        .event-special {
             background-color: #eff6ff;
             border-left-color: #3b82f6;
         }
+        .event-special:hover {
+            background-color: #dbeafe;
+        }
 
-        .event.break {
+        .event-break {
             background-color: #f0fdf4;
             border-left-color: #22c55e;
         }
+        .event-break:hover {
+            background-color: #dcfce7;
+        }
 
-        .event.cultural {
+        .event-cultural {
             background-color: #fdf2f8;
             border-left-color: #ec4899;
         }
+        .event-cultural:hover {
+            background-color: #fce7f3;
+        }
 
-        .event.food {
+        .event-food {
             background-color: #fef2f2;
             border-left-color: #ef4444;
         }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 100;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            overflow: auto;
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 15% auto;
-            padding: 20px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            animation: modalFadeIn 0.3s ease;
-        }
-
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .close {
-            color: #9ca3af;
-            float: right;
-            font-size: 1.75rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-
-        .close:hover {
-            color: #1f2937;
-        }
-
-        .event-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 10px;
-        }
-
-        .event-time {
-            display: inline-block;
-            background-color: #f97316;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            margin-bottom: 15px;
-        }
-
-        .event-description {
-            color: #4b5563;
-            line-height: 1.5;
-        }
-
-        /* Legend */
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 20px 0;
-            justify-content: center;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            font-size: 0.875rem;
-            color: #4b5563;
-        }
-
-        .legend-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 3px;
-            margin-right: 5px;
-        }
-
-        .legend-color.default {
-            background-color: #f97316;
-        }
-
-        .legend-color.special {
-            background-color: #3b82f6;
-        }
-
-        .legend-color.break {
-            background-color: #22c55e;
-        }
-
-        .legend-color.cultural {
-            background-color: #ec4899;
-        }
-
-        .legend-color.food {
-            background-color: #ef4444;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .title {
-                font-size: 1.75rem;
-            }
-            
-            .calendar th, .calendar td {
-                font-size: 0.8rem;
-            }
-            
-            .event {
-                font-size: 0.75rem;
-                padding: 3px 5px;
-            }
+        .event-food:hover {
+            background-color: #fee2e2;
         }
 
         /* View toggle */
@@ -364,6 +292,9 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
+        }
+
+        .list-event-indicator.default {
             background-color: #f97316;
         }
 
@@ -382,6 +313,189 @@
         .list-event-indicator.food {
             background-color: #ef4444;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .close {
+            color: #9ca3af;
+            float: right;
+            font-size: 1.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .close:hover {
+            color: #1f2937;
+        }
+
+        .event-time-badge {
+            display: inline-block;
+            background-color: #f97316;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            margin-bottom: 15px;
+        }
+
+        .event-time-badge.special {
+            background-color: #3b82f6;
+        }
+
+        .event-time-badge.break {
+            background-color: #22c55e;
+        }
+
+        .event-time-badge.cultural {
+            background-color: #ec4899;
+        }
+
+        .event-time-badge.food {
+            background-color: #ef4444;
+        }
+
+        .event-description {
+            color: #4b5563;
+            line-height: 1.5;
+        }
+
+        /* Areas grid */
+        .areas-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        @media (min-width: 640px) {
+            .areas-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .area-button {
+            text-align: left;
+            padding: 12px 16px;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .area-button:hover {
+            background-color: #f3f4f6;
+        }
+
+        .area-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .area-title {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .back-button {
+            color: #f97316;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .back-button:hover {
+            color: #ea580c;
+        }
+
+        .presentation-card {
+            padding: 16px;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .presentation-title {
+            font-weight: 500;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .presentation-location {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .location-label {
+            font-weight: 500;
+            margin-right: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.75rem;
+            }
+            
+            .calendar-header, .time-cell {
+                font-size: 0.8rem;
+            }
+            
+            .event-title {
+                font-size: 0.75rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -397,45 +511,19 @@
             <button id="listViewBtn" class="view-button">Vista Lista</button>
         </div>
 
-        <div class="legend">
-            <div class="legend-item">
-                <div class="legend-color default"></div>
-                <span>Actividades académicas</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color special"></div>
-                <span>Plenarias y Semilenarias</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color break"></div>
-                <span>Café y Descansos</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color cultural"></div>
-                <span>Actividades culturales</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color food"></div>
-                <span>Comidas</span>
-            </div>
+        <div class="info-banner">
+            <div class="info-icon">ℹ️</div>
+            <p class="info-text">
+                Haga clic en cualquier actividad del calendario para ver información detallada. Para las actividades de tipo
+                <strong>Contribuidas</strong>, <strong>Cursillo</strong> y <strong>Semiplenaria</strong>, podrá ver las
+                ponencias por área temática y sus respectivas ubicaciones.
+            </p>
         </div>
 
         <div id="calendarView" class="calendar-container">
-            <table class="calendar">
-                <thead>
-                    <tr>
-                        <th>Hora</th>
-                        <th>Lunes</th>
-                        <th>Martes</th>
-                        <th>Miércoles</th>
-                        <th>Jueves</th>
-                        <th>Viernes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Las filas del calendario se generarán con JavaScript -->
-                </tbody>
-            </table>
+            <div class="calendar-grid">
+                <!-- Los encabezados y el contenido del calendario se generarán con JavaScript -->
+            </div>
         </div>
 
         <div id="listView" class="list-container">
@@ -446,10 +534,14 @@
     <!-- Modal para detalles del evento -->
     <div id="eventModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="eventTitle" class="event-title">Título del evento</h2>
-            <div id="eventTime" class="event-time">Hora del evento</div>
-            <p id="eventDescription" class="event-description">Descripción del evento...</p>
+            <div class="modal-header">
+                <h2 id="eventTitle" class="modal-title">Título del evento</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div id="eventTime" class="event-time-badge">Hora del evento</div>
+            <div id="eventContent">
+                <!-- El contenido del modal se generará dinámicamente -->
+            </div>
         </div>
     </div>
 
@@ -466,7 +558,7 @@
                 { time: "12:00-14:00", activity: "Almuerzo", type: "food", description: "Pausa para almuerzo." },
                 { time: "14:00-15:30", activity: "Contribuidas", type: "default", description: "Sesiones de ponencias contribuidas por los participantes." },
                 { time: "15:30-16:00", activity: "Café y Pósteres", type: "break", description: "Pausa para café y sesión de pósteres." },
-                { time: "16:00-17:00", activity: "Semilenaria", type: "special", description: "Conferencia semilenaria a cargo de un invitado destacado." },
+                { time: "16:00-17:00", activity: "Semiplenaria", type: "special", description: "Conferencia semiplenaria a cargo de un invitado destacado." },
                 { time: "17:00-18:00", activity: "Plenaria", type: "special", description: "Conferencia plenaria a cargo de un invitado especial." },
                 { time: "18:00-19:00", activity: "Actividad cultural", type: "cultural", description: "Actividad cultural para todos los participantes." }
             ],
@@ -478,7 +570,7 @@
                 { time: "12:00-14:00", activity: "Almuerzo", type: "food", description: "Pausa para almuerzo." },
                 { time: "14:00-15:30", activity: "Contribuidas", type: "default", description: "Sesiones de ponencias contribuidas por los participantes." },
                 { time: "15:30-16:00", activity: "Café y Pósteres", type: "break", description: "Pausa para café y sesión de pósteres." },
-                { time: "16:00-17:00", activity: "Semilenaria", type: "special", description: "Conferencia semilenaria a cargo de un invitado destacado." },
+                { time: "16:00-17:00", activity: "Semiplenaria", type: "special", description: "Conferencia semiplenaria a cargo de un invitado destacado." },
                 { time: "17:00-18:00", activity: "Plenaria", type: "special", description: "Conferencia plenaria a cargo de un invitado especial." },
                 { time: "18:00-19:00", activity: "Asamblea", type: "default", description: "Asamblea general de la Sociedad Colombiana de Matemáticas." }
             ],
@@ -490,7 +582,7 @@
                 { time: "12:00-14:00", activity: "Almuerzo", type: "food", description: "Pausa para almuerzo." },
                 { time: "14:00-15:30", activity: "Contribuidas", type: "default", description: "Sesiones de ponencias contribuidas por los participantes." },
                 { time: "15:30-16:00", activity: "Café y Pósteres", type: "break", description: "Pausa para café y sesión de pósteres." },
-                { time: "16:00-17:00", activity: "Semilenaria", type: "special", description: "Conferencia semilenaria a cargo de un invitado destacado." },
+                { time: "16:00-17:00", activity: "Semiplenaria", type: "special", description: "Conferencia semiplenaria a cargo de un invitado destacado." },
                 { time: "17:00-18:00", activity: "Plenaria", type: "special", description: "Conferencia plenaria a cargo de un invitado especial." },
                 { time: "18:00-19:00", activity: "Cena", type: "food", description: "Cena de gala del congreso." }
             ],
@@ -502,80 +594,182 @@
                 { time: "12:00-14:00", activity: "Almuerzo", type: "food", description: "Pausa para almuerzo." },
                 { time: "14:00-15:30", activity: "Contribuidas", type: "default", description: "Sesiones de ponencias contribuidas por los participantes." },
                 { time: "15:30-16:00", activity: "Café y Pósteres", type: "break", description: "Pausa para café y sesión de pósteres." },
-                { time: "16:00-17:00", activity: "Semilenaria", type: "special", description: "Conferencia semilenaria a cargo de un invitado destacado." },
+                { time: "16:00-17:00", activity: "Semiplenaria", type: "special", description: "Conferencia semiplenaria a cargo de un invitado destacado." },
                 { time: "17:00-18:00", activity: "Plenaria", type: "special", description: "Conferencia plenaria a cargo de un invitado especial." },
                 { time: "18:00-19:00", activity: "Actividad cultural", type: "cultural", description: "Actividad cultural de clausura del congreso." }
             ]
         };
 
-        // Definir las horas del día para el calendario
-        const timeSlots = [
-            "07:00-08:00", "08:00-09:00", "09:00-10:00", "10:00-11:00", 
-            "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00", 
-            "15:00-16:00", "16:00-17:00", "17:00-18:00", "18:00-19:00"
+        // Lista de áreas de matemáticas
+        const mathAreas = [
+            "Álgebra",
+            "Análisis Real",
+            "Combinatoria",
+            "Ecuaciones Diferenciales",
+            "Educación Matemática",
+            "Física Matemática",
+            "Geometría",
+            "Historia de la Matemática",
+            "Lógica",
+            "Optimización, Teoría de Control y Aplicaciones a Economía",
+            "Probabilidad y Estadística",
+            "Teoría de Operadores, Análisis Numérico y Ciencias de la Computación",
+            "Topología",
         ];
+
+        // Función para generar títulos según el tipo de evento
+        function generateTitles(eventType) {
+            if (eventType.toLowerCase().includes("cursillo")) {
+                return ["Cursillo 1", "Cursillo 2", "Cursillo 3"];
+            } else if (eventType.toLowerCase().includes("semiplenaria")) {
+                return ["Semiplenaria 1", "Semiplenaria 2", "Semiplenaria 3"];
+            } else {
+                return ["Ponencia 1", "Ponencia 2", "Ponencia 3"];
+            }
+        }
+
+        // Función para generar presentaciones según el tipo de evento y área
+        function getPresentations(area, eventType) {
+            const titles = generateTitles(eventType);
+            const baseRoom = mathAreas.indexOf(area) * 3 + 101;
+
+            return [
+                { title: titles[0], location: `Auditorio A-${baseRoom}` },
+                { title: titles[1], location: `Salón B-${baseRoom + 1}` },
+                { title: titles[2], location: `Sala C-${baseRoom + 2}` },
+            ];
+        }
+
+        // Definir las horas del día para el calendario
+        function getTimeSlots() {
+            const slots = [];
+            // Horas de la mañana (AM)
+            for (let hour = 7; hour <= 11; hour++) {
+                slots.push(`${hour}:00 AM`);
+            }
+            // Mediodía
+            slots.push(`12:00 PM`);
+            // Horas de la tarde (PM)
+            for (let hour = 1; hour <= 7; hour++) {
+                slots.push(`${hour}:00 PM`);
+            }
+            return slots;
+        }
 
         // Mapeo de días a índices de columna
         const dayToColumn = {
-            monday: 1,
-            tuesday: 2,
-            wednesday: 3,
-            thursday: 4,
-            friday: 5
+            monday: 0,
+            tuesday: 1,
+            wednesday: 2,
+            thursday: 3,
+            friday: 4
         };
+
+        // Función para convertir hora (HH:MM) a minutos desde las 7:00
+        function timeToMinutes(time) {
+            const [hours, minutes] = time.split(':').map(Number);
+            // Convertir formato 24h a minutos desde las 7:00
+            return (hours < 7 ? hours + 12 : hours) * 60 + minutes - 7 * 60;
+        }
+
+        // Función para calcular la posición y altura de un evento
+        function calculateEventPosition(startTime, endTime) {
+            const startMinutes = timeToMinutes(startTime);
+            const endMinutes = timeToMinutes(endTime);
+            const duration = endMinutes - startMinutes;
+
+            // Cada hora = 60px de altura
+            const top = (startMinutes / 60) * 60;
+            const height = Math.max((duration / 60) * 60, 20); // Altura mínima de 20px
+
+            return { top, height };
+        }
 
         // Función para generar el calendario
         function generateCalendar() {
-            const calendarBody = document.querySelector('.calendar tbody');
-            calendarBody.innerHTML = '';
-
-            // Crear filas para cada franja horaria
-            timeSlots.forEach(timeSlot => {
-                const row = document.createElement('tr');
-                
-                // Celda de hora
-                const timeCell = document.createElement('td');
-                timeCell.innerHTML = `<div class="time-cell">${timeSlot}</div>`;
-                row.appendChild(timeCell);
-                
-                // Celdas para cada día (5 días)
-                for (let i = 1; i <= 5; i++) {
-                    const dayCell = document.createElement('td');
-                    row.appendChild(dayCell);
-                }
-                
-                calendarBody.appendChild(row);
+            const calendarGrid = document.querySelector('.calendar-grid');
+            calendarGrid.innerHTML = '';
+            
+            // Crear encabezados
+            const headerRow = document.createElement('div');
+            headerRow.style.display = 'contents';
+            
+            // Celda de esquina
+            const cornerCell = document.createElement('div');
+            cornerCell.className = 'calendar-header';
+            headerRow.appendChild(cornerCell);
+            
+            // Encabezados de días
+            const dayNames = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
+            dayNames.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-header';
+                dayHeader.textContent = day;
+                headerRow.appendChild(dayHeader);
             });
-
-            // Colocar eventos en el calendario
-            Object.keys(scheduleData).forEach(day => {
-                const dayIndex = dayToColumn[day];
+            
+            calendarGrid.appendChild(headerRow);
+            
+            // Crear contenedor para el cuerpo del calendario
+            const calendarBody = document.createElement('div');
+            calendarBody.style.display = 'contents';
+            
+            // Columna de horas
+            const timeColumn = document.createElement('div');
+            timeColumn.className = 'time-column';
+            
+            const timeSlots = getTimeSlots();
+            timeSlots.forEach(time => {
+                const timeCell = document.createElement('div');
+                timeCell.className = 'time-cell';
+                timeCell.textContent = time;
+                timeColumn.appendChild(timeCell);
+            });
+            
+            calendarBody.appendChild(timeColumn);
+            
+            // Columnas de días
+            for (let dayIndex = 0; dayIndex < 5; dayIndex++) {
+                const dayColumn = document.createElement('div');
+                dayColumn.className = 'day-column';
                 
-                scheduleData[day].forEach(event => {
+                // Crear celdas de hora para este día
+                timeSlots.forEach(() => {
+                    const hourCell = document.createElement('div');
+                    hourCell.className = 'hour-cell';
+                    dayColumn.appendChild(hourCell);
+                });
+                
+                calendarBody.appendChild(dayColumn);
+            }
+            
+            calendarGrid.appendChild(calendarBody);
+            
+            // Agregar eventos al calendario
+            Object.entries(scheduleData).forEach(([day, events]) => {
+                const dayIndex = dayToColumn[day];
+                const dayColumn = calendarBody.children[dayIndex + 1]; // +1 porque la primera columna es la de horas
+                
+                events.forEach(event => {
                     const [startTime, endTime] = event.time.split('-');
-                    const startHour = parseInt(startTime.split(':')[0]);
+                    const position = calculateEventPosition(startTime, endTime);
                     
-                    // Encontrar la fila correspondiente a la hora de inicio
-                    const rowIndex = timeSlots.findIndex(slot => slot.startsWith(startTime.substring(0, 2)));
+                    const eventElement = document.createElement('div');
+                    eventElement.className = `event event-${event.type}`;
+                    eventElement.style.top = `${position.top}px`;
+                    eventElement.style.height = `${position.height}px`;
                     
-                    if (rowIndex !== -1) {
-                        const cell = calendarBody.rows[rowIndex].cells[dayIndex];
-                        
-                        // Crear el elemento del evento
-                        const eventElement = document.createElement('div');
-                        eventElement.className = `event ${event.type}`;
-                        eventElement.textContent = event.activity;
-                        eventElement.setAttribute('data-activity', event.activity);
-                        eventElement.setAttribute('data-time', event.time);
-                        eventElement.setAttribute('data-description', event.description);
-                        
-                        // Agregar evento al hacer clic
-                        eventElement.addEventListener('click', function() {
-                            showEventDetails(event);
-                        });
-                        
-                        cell.appendChild(eventElement);
-                    }
+                    const eventTitle = document.createElement('div');
+                    eventTitle.className = 'event-title';
+                    eventTitle.textContent = event.activity;
+                    eventElement.appendChild(eventTitle);
+                    
+                    // Agregar evento al hacer clic
+                    eventElement.addEventListener('click', function() {
+                        showEventDetails(event);
+                    });
+                    
+                    dayColumn.appendChild(eventElement);
                 });
             });
         }
@@ -589,13 +783,13 @@
             const dayNames = {
                 monday: 'Lunes',
                 tuesday: 'Martes',
-                wednesday: 'Miércoles',
+                wednesday: '​Miércoles',
                 thursday: 'Jueves',
                 friday: 'Viernes'
             };
             
             // Crear secciones para cada día
-            Object.keys(scheduleData).forEach(day => {
+            Object.entries(scheduleData).forEach(([day, events]) => {
                 const daySection = document.createElement('div');
                 daySection.className = 'day-section';
                 
@@ -605,7 +799,7 @@
                 daySection.appendChild(dayTitle);
                 
                 // Agregar eventos del día
-                scheduleData[day].forEach(event => {
+                events.forEach(event => {
                     const eventElement = document.createElement('div');
                     eventElement.className = 'list-event';
                     
@@ -646,13 +840,85 @@
             const modal = document.getElementById('eventModal');
             const title = document.getElementById('eventTitle');
             const time = document.getElementById('eventTime');
-            const description = document.getElementById('eventDescription');
+            const content = document.getElementById('eventContent');
             
             title.textContent = event.activity;
             time.textContent = event.time;
-            description.textContent = event.description;
+            time.className = `event-time-badge ${event.type}`;
+            
+            // Verificar si es un evento que debe mostrar áreas y ponencias
+            const shouldShowAreas = 
+                event.activity.toLowerCase().includes("contribuidas") ||
+                event.activity.toLowerCase().includes("cursillo") ||
+                event.activity.toLowerCase().includes("semiplenaria");
+            
+            if (shouldShowAreas) {
+                showAreasView(event.activity, content);
+            } else {
+                content.innerHTML = `<p class="event-description">${event.description}</p>`;
+            }
             
             modal.style.display = 'block';
+        }
+
+        // Función para mostrar la vista de áreas
+        function showAreasView(eventType, container) {
+            // Determinar el título según el tipo de evento
+            let title = "Seleccione un área temática:";
+            if (eventType.toLowerCase().includes("contribuidas")) {
+                title = "Seleccione un área temática para ver las ponencias contribuidas:";
+            } else if (eventType.toLowerCase().includes("cursillo")) {
+                title = "Seleccione un área temática para ver los cursillos:";
+            } else if (eventType.toLowerCase().includes("semiplenaria")) {
+                title = "Seleccione un área temática para ver las semiplenarias:";
+            }
+            
+            container.innerHTML = `
+                <p class="event-description">${title}</p>
+                <div class="areas-grid">
+                    ${mathAreas.map(area => `
+                        <button class="area-button" data-area="${area}">${area}</button>
+                    `).join('')}
+                </div>
+            `;
+            
+            // Agregar eventos a los botones de área
+            const areaButtons = container.querySelectorAll('.area-button');
+            areaButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const area = this.getAttribute('data-area');
+                    showPresentationsView(area, eventType, container);
+                });
+            });
+        }
+
+        // Función para mostrar la vista de ponencias
+        function showPresentationsView(area, eventType, container) {
+            const presentations = getPresentations(area, eventType);
+            
+            container.innerHTML = `
+                <div class="area-header">
+                    <h3 class="area-title">${area}</h3>
+                    <button class="back-button">Volver a áreas</button>
+                </div>
+                <div class="presentations-list">
+                    ${presentations.map(presentation => `
+                        <div class="presentation-card">
+                            <h4 class="presentation-title">${presentation.title}</h4>
+                            <div class="presentation-location">
+                                <span class="location-label">Ubicación:</span>
+                                ${presentation.location}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // Agregar evento al botón de volver
+            const backButton = container.querySelector('.back-button');
+            backButton.addEventListener('click', function() {
+                showAreasView(eventType, container);
+            });
         }
 
         // Inicializar el calendario y la vista de lista
